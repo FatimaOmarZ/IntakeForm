@@ -47,7 +47,7 @@ npm start
 
 Visit [http://localhost:3000](http://localhost:3000) in your browser.
 
-- The main form is available at `/`
+- The main form is available at `/form.html`
 - The admin panel is at `/admin.html`
 
 ## Notes
