@@ -4,7 +4,7 @@ import { q, fill, val, todayISO, formatPostal } from './common.js';
 function logBox(label, box) {
   const id    = box.id    || '«no-id»';
   const name  = box.name  || '«no-name»';
-  const note  = `${label}  ▶  id="${id}"  name="${name}"`;
+  const note  = `${label}  :  id="${id}"  name="${name}"`;
 
   const inputs =
     box.shadowRoot?.querySelectorAll('input[type=checkbox]') ??
@@ -18,6 +18,20 @@ function logBox(label, box) {
     attrChecked: i.hasAttribute('checked')
   })));
   console.groupEnd();
+}
+const REG_FM      = /^\d{5}$/;  //allowing max 5 digits
+const REG_POSTAL  = /^[A-Za-z]\d[A-Za-z][ ]?\d[A-Za-z]\d$/;
+
+function isPastOrToday(dateStr) {
+  const today = new Date().setHours(0,0,0,0);
+  const d     = new Date(dateStr).setHours(0,0,0,0);
+  return d <= today;
+}
+function normalisePostal(code = '') {   //auto change the unformatted correct post code to formatted one
+  if (typeof code !== 'string') return '';
+  return code.replace(/\s+/g, '')
+    .toUpperCase()
+    .replace(/^([A-Z]\d[A-Z])(\d[A-Z]\d)$/, '$1 $2');
 }
 
 //
@@ -58,12 +72,20 @@ function markError(el, msg) {
   } else {
     const wrap = el.closest('.prefix-wrap') ?? el;
     el.classList.add('ontario-input--error');
+    wrap.classList.add('ontario-input--error');
+
+    wrap.parentElement
+        ?.querySelectorAll('.ontario-input__message--error')
+        ?.forEach(e => e.remove());
+
     const span = document.createElement('span');
-    span.className = 'ontario-input__message ontario-input__message--error';
+    span.className =
+      'ontario-input__message ontario-input__message--error';
     span.textContent = msg;
-    wrap.appendChild(span);
+    el.insertAdjacentElement('afterend', span);
   }
 }
+
 
 //
 function forceUncheck(box) {
@@ -112,26 +134,34 @@ function clearFormValues(form) {
       .forEach(el => { el.value = ''; el.requestUpdate?.(); });
   form.querySelectorAll('ontario-checkboxes').forEach(forceUncheck);
 }
-
 function collectPayload(form) {
-  const data = Object.fromEntries(new FormData(form)); 
+  const data = Object.fromEntries(new FormData(form));
 
-  form.querySelectorAll('ontario-input, ontario-textarea')
-      .forEach(el => { if (el.name) data[el.name] = el.value; });
+  form.querySelectorAll('ontario-input, ontario-textarea').forEach(el => {
+    if (!el.name) return;
 
-  form.querySelectorAll('ontario-checkboxes')
-      .forEach(el => {
-        if (!el.name) return;
-        
-        if (el.value.length <= 1) {
-          data[el.name] = !!el.value.length;
-        } else {
-          data[el.name] = [...el.value];
-        }
-      });
+    let value = el.value;
+    
+    if (value === undefined || value === null) {
+      const inner = el.shadowRoot?.querySelector('input, textarea');
+      value = inner?.value || '';
+    }
+
+    data[el.name] = value;
+  });
+
+  form.querySelectorAll('ontario-checkboxes').forEach(el => {
+    if (!el.name) return;
+
+    const val = el.value;
+    data[el.name] = Array.isArray(val) ? val : !!val?.length;
+  });
 
   return data;
 }
+
+
+
 
 //main func
 document.addEventListener('DOMContentLoaded', async () => {
@@ -241,15 +271,37 @@ q('#inspectionForm').addEventListener('submit', async ev => {
   const certifyBox = q('#certify-box');
   const prefillBox = q('#prefill-box');
 
-  const errs = [];
+ const errs = [];
   form.querySelectorAll('[required]').forEach(el => {
-    if (el === certifyBox) return;            
-    const v   = el.value;
-    const pat = el.getAttribute('pattern');
-    const bad = Array.isArray(v) ? !v.length : !String(v).trim();
-    if (bad)           errs.push([el, 'This field is required.']);
-    else if (pat && !(new RegExp(pat, 'i').test(v)))
-                      errs.push([el, 'Invalid format.']);
+    if (el === certifyBox) return;   
+
+    let v = el.value;
+
+    if (el.id === 'addr-postal') {
+     v = normalisePostal(v ?? '');
+      el.value = v;   
+    }
+
+    if (el.id === 'marshal-number' && !REG_FM.test(v))
+      return errs.push([el,'Enter a 5-digit FM number.']);
+
+    if (el.id === 'inspection-date' && !isPastOrToday(v))
+      return errs.push([el,'Date cannot be in the future.']);
+
+    if (el.id === 'addr-postal' && !REG_POSTAL.test(v))
+      return errs.push([el,'Postal code format: A1A 1A1']);
+
+    const pat   = el.getAttribute('pattern');
+    const empty =
+    v === undefined || v === null
+      ? true
+      : Array.isArray(v)
+        ? v.length === 0
+        : String(v).trim() === '';
+
+    if (empty) errs.push([el,'This field is required.']);
+    else if (pat && !(new RegExp(pat,'i').test(v)))
+              errs.push([el,'Invalid format.']);
   });
 
   if (!certChecked) errs.push([certifyBox, 'You must certify the inspection.']);
@@ -274,16 +326,24 @@ q('#inspectionForm').addEventListener('submit', async ev => {
   } catch {
     res = { ok: false };
   }
-
- if (res.ok) {
-  let id = '';                     
+if (res.ok) {
+  let newId = '';    
 
   try {
-    const data = await res.clone().json();   
-    id = data?.id ? ` (ID ${data.id})` : '';
-  } catch { /* ignore */ }
+    const data = await res.clone().json();
+    if (data?.id) {
+      newId = String(data.id);
 
-  showAlert(`Saved ✓${id}`, 'success', 4500);
+      const list = document.getElementById('past-ids');
+      if (list && !list.querySelector(`option[value="${newId}"]`)) {
+        const opt = document.createElement('option');
+        opt.value = newId;
+        list.prepend(opt);       
+      }
+    }
+  } catch { /* no JSON body – ignore */ }
+
+  showAlert(`Saved ✓${newId ? ` (ID ${newId})` : ''}`, 'success', 4500);
 
   clearFormValues(form);
   fill('#inspection-date', todayISO());
@@ -291,9 +351,11 @@ q('#inspectionForm').addEventListener('submit', async ev => {
   forceUncheck(prefillBox);
   forceUncheck(certifyBox);
   certChecked = false;
+
 } else {
   showAlert('Server error - please try again.', 'error', 7000);
 }
+
 });
 
 }
