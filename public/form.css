@@ -1,0 +1,139 @@
+
+body,
+.ontario-input,
+.ontario-textarea,
+.ontario-label,
+.ontario-heading-m,
+.ontario-heading-l {
+  font-family: Arial, Helvetica, sans-serif !important;
+}
+.ontario-header--light {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 1.5rem 3rem 1.75rem 2rem;   
+  border-bottom: 2px solid #1a1a1a;
+}
+
+.ontario-logo {
+  height: 48px;
+}
+
+.ministry-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex: 1;
+}
+
+.ministry-block p {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.25rem;
+}
+.ministry-name {
+  font-weight: 700;
+}
+.office-name {
+  font-weight: 400;
+}
+
+.title-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  text-align: right;
+}
+
+.form-title {
+  font-size: 1.75rem;  
+  line-height: 1.2;
+  margin: 0;
+}
+
+.form-wrapper {
+  margin: 0 auto;
+  max-width: 840px;
+  background: #fff;
+  border: 1px solid #c8c8c8;
+  border-radius: 6px;
+  padding: 2rem;
+}
+
+#errorBar,                   
+#form-error-banner {
+  position: sticky;
+  top: 0;
+  z-index: 6000;
+  background: #f8d7da;      
+  border: 1px solid #d12831; 
+  color: #1a1a1a;
+  padding: .75rem 1rem;
+  border-radius: 4px;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 1.25rem;
+}
+.ontario-hide { display: none !important; }
+
+#global-error {     
+  max-width: 840px;
+  margin: 1rem auto;
+}
+
+.prefix-wrap .ontario-input__message--error {
+  display: block;
+  color: #d8292f;
+  font-size: 0.875rem;
+  margin-top: 4px;
+  font-weight: 400;
+}
+.hide { display: none !important; }
+
+@media (max-width: 767px) {
+  .title-wrap {
+    justify-content: flex-start;
+    margin-top: 0.75rem;
+  }
+}
+
+main.ontario-row {
+  display: flex;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+
+.ontario-form-section {
+  border: 1px solid #c8c8c8;
+  border-radius: 4px;
+  background: #f9f9f9;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.ontario-hide { display: none; }
+.display-block { display: block; }
+.prefix-wrap { display: flex; align-items: center; gap: 0.25rem; max-width: 14rem; }
+.prefix-text { font-weight: 600; }
+
+.ontario-label { display: block; margin-bottom: 0.25rem; font-weight: 700; }
+.ontario-input,
+.ontario-dropdown,
+.ontario-textarea { width: 100%; margin-bottom: 1.25rem; }
+.ontario-label__flag { font-weight: 400; font-size: 0.875rem; margin-left: 0.25rem; }
+
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+  outline: 3px solid #1a1a1a;
+  outline-offset: 5px;
+}
+
+
+@media print {
+  .ontario-form-section {
+    page-break-inside: avoid;
+    background: none;
+  }
+}

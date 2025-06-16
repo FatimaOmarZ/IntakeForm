@@ -1,0 +1,19 @@
+{
+  "name": "intake-form-fire-marshal-eform",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@ongov/ontario-design-system-component-library": "^5.0.0",
+    "@ongov/ontario-design-system-global-styles": "^5.0.0",
+    "cors": "^2.8.5",
+    "express": "^5.1.0"
+  }
+}

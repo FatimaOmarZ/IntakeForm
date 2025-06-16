@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Inspection Submissions - Admin</title>
+
+  <link rel="stylesheet" href="/ods/css/ontario-theme.css" />
+  <script type="module" src="/ods/js/ontario-design-system-components.esm.js"></script>
+  <script nomodule     src="/ods/js/ontario-design-system-components.js"></script>
+    <!-- <link rel="stylesheet" href="/ods/css/ontario-design-system.min.css"> -->
+    <link rel="stylesheet" href="/ods/components/ontario-table/ontario-table.css">
+
+  <link rel="stylesheet" href="admin.css" />
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico" />
+
+  <script type="module" src="admin.js"   defer></script>
+  <script type="module" src="common.js"  defer></script>
+</head>
+
+<body class="ontario-page">
+
+  <div id="admin-banner"
+       class="ontario-status ontario-status--error ontario-hide"></div>
+
+  <!-- main content -->
+  <main class="ontario-row ontario-margin-top-32-!">
+    <div class="ontario-column ontario-small-12">
+        <p><a href="form.html">← Back to Form</a></p>
+      <h4 class="ontario-heading-s">Submitted inspections</h4>
+
+      <table class="ontario-table" id="submissions-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Date</th>
+            <th>Inspector</th>
+            <th>Type</th>
+            <th>City/Town</th>
+            <th>Certified?</th> 
+          </tr>
+        </thead>
+        <tbody><!-- yhis part filled by admin.js --></tbody>
+      </table>
+    </div>
+  </main>
+
+  
+    <aside id="detail-drawer" aria-hidden="true" tabindex="-1">
+    <button id="drawer-close" class="drawer-close" aria-label="Close details">x</button>
+    <h5 class="ontario-heading-s ontario-margin-bottom-8" id="drawer-title">Submission Details</h5>
+    <dl id="drawer-fields" class="drawer-fields"></dl>
+    </aside>
+  <script type="module">
+    import { loadCommonLayout } from './common.js';
+    loadCommonLayout();          
+  </script>
+</body>
+</html>

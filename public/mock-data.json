@@ -1,0 +1,21 @@
+{
+  "marshalNumber": "12345",
+  "inspectorName": "Alex Chan",
+  "inspectorEmail": "alex.chan@example.ca",
+  "inspectorPhone": "416-555-0199",
+  "inspectionDate": "2025-05-30",
+  "inspectionType": "routine",
+
+  "streetNumber": "123",
+  "streetName": "King St W",
+  "unitNumber": "Suite 900",
+  "city": "Toronto",
+  "postal": "M5H 2N2",
+
+  "routineChecklist": "yes",
+  "routineScore": 87,
+
+  "signoffName": "Alex Chan",
+  "signoffDate": "2025-05-30 14:07",
+  "certify": ["certify"]
+}

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Fire Marshal Inspection Form</title>
+
+  <link rel="stylesheet" href="/ods/css/ontario-theme.css" />
+  <script type="module" src="/ods/js/ontario-design-system-components.esm.js"></script>
+  <script nomodule src="/ods/js/ontario-design-system-components.js"></script>
+
+  <link rel="stylesheet" href="form.css" />
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico" />
+
+  <script type="module" src="common.js"></script>
+  <script type="module" src="form.js"></script>
+</head>
+
+<body class="ontario-page">
+
+<!-- <div id="global-error" class="ontario-hide"></div> -->
+
+
+  
+  <main class="ontario-row ontario-margin-top-32-!">
+  <ontario-checkboxes id="prefill-box" name="prefill" caption="Prefill Form" options='[{  "id":"auto-prefill","value": "auto-prefill", "label": "Prefill with sample data", "elementId": "auto-prefill" }]'></ontario-checkboxes>
+    
+    <div class="ontario-column ontario-small-12 ontario-medium-10">
+       
+      <div class="form-wrapper">
+     <div id="form-error-banner" class="ontario-hide error-bar" role="alert">
+      Please check the highlighted fields and submit again.
+    </div>
+
+      <form id="inspectionForm" novalidate>
+        <!-- <form id="inspectionForm" novalidate> -->
+          <!-- general details -->
+          <div class="ontario-form-section">
+            <fieldset class="ontario-fieldset">
+              <legend class="ontario-fieldset__legend ontario-fieldset__legend--medium">
+                1. General Details
+              </legend>
+
+              <label class="ontario-label" for="marshal-number">
+                Fire Marshal Number <span class="ontario-label__flag">(required)</span>
+              </label>
+              <div class="prefix-wrap">
+                <span class="prefix-text">FM-</span>
+                <input id="marshal-number" name="marshalNumber" class="ontario-input" inputmode="numeric" maxlength="5" pattern="\d{5}" required placeholder="12345" />
+              </div>
+
+              <ontario-input id="inspector-name" name="inspectorName" caption="Inspector Name" readonly></ontario-input>
+              <ontario-input id="inspector-email" name="inspectorEmail" caption="Inspector Email" readonly></ontario-input>
+              <ontario-input id="inspector-phone" name="inspectorPhone" caption="Inspector Phone" readonly></ontario-input>
+
+              <label class="ontario-label" for="inspection-date">
+                Inspection Date <span class="ontario-label__flag">(required)</span>
+              </label>
+              <input type="date" id="inspection-date" name="inspectionDate" class="ontario-input" required />
+
+              <label class="ontario-label ontario-margin-top-16" for="inspection-type">
+                Inspection Type <span class="ontario-label__flag">(required)</span>
+              </label>
+              <select id="inspection-type" name="inspectionType" class="ontario-input ontario-dropdown" required>
+                <option value="">Select</option>
+                <option value="routine">Routine</option>
+                <option value="followup">Follow-Up</option>
+                <option value="complaint">Complaint</option>
+              </select>
+
+              <!-- routine fields -->
+              <div id="type-routine" class="ontario-form-section ontario-hide">
+                <h4 class="ontario-heading-s">Routine Details</h4>
+                <label class="ontario-label" for="routine-checklist">
+                  Checklist completed?
+                  <span class="ontario-label__flag">(required)</span>
+                </label>
+                <select id="routine-checklist" name="routineChecklist" class="ontario-input ontario-dropdown">
+                  <option value="">Select</option>
+                  <option value="yes">Yes</option>
+                  <option value="no">No</option>
+                </select>
+
+                <label class="ontario-label ontario-margin-top-8" for="routine-score">
+                  Inspection Score (0-100)
+                  <span class="ontario-label__flag">(required)</span>
+                </label>
+                <input
+                  type="number"
+                  id="routine-score"
+                  name="routineScore"
+                  class="ontario-input"
+                  min="0"
+                  max="100" />
+              </div>
+
+              <!--follow up dynamic fields-->
+              <div id="type-followup" class="ontario-form-section ontario-hide">
+                <h4 class="ontario-heading-s">Follow-Up Details</h4>
+                <label class="ontario-label" for="prev-id">
+                  Previous Inspection ID <span class="ontario-label__flag">(required)</span>
+                </label>
+                <input id="prev-id" list="past-ids" name="followupPrevId" class="ontario-input" />
+                <datalist id="past-ids"></datalist>
+
+                <label class="ontario-label ontario-margin-top-8">
+                  Issues resolved? <span class="ontario-label__flag">(required)</span>
+                </label>
+                <label><input type="radio" name="followupIssues" value="yes" /> Yes</label>
+                <label><input type="radio" name="followupIssues" value="no" /> No</label>
+              </div>
+
+              <!--complaint inspection -->
+              <div id="type-complaint" class="ontario-form-section ontario-hide">
+                <h4 class="ontario-heading-s">Complaint Details</h4>
+                <ontario-input
+                  id="complainant-email"
+                  name="complainantEmail"
+                  caption="Complainant Email"
+                  type="email"></ontario-input>
+
+                <ontario-textarea
+                  id="complaint-desc"
+                  name="complaintDesc"
+                  caption="Complaint Description"></ontario-textarea>
+              </div>
+
+              <ontario-textarea id="comments" name="comments" caption="Additional Comments"></ontario-textarea>
+            </fieldset>
+          </div>
+
+          <!-- building information-->
+          <div class="ontario-form-section">
+            <fieldset class="ontario-fieldset">
+              <legend class="ontario-fieldset__legend ontario-fieldset__legend--small">
+                2. Site Information
+              </legend>
+              <div class="form-grid">
+                <ontario-input
+                  id="addr-street-num"
+                  name="streetNumber"
+                  caption="Street Number"
+                  required
+                  pattern="\d+"></ontario-input>
+
+                <ontario-input id="addr-street-name" name="streetName" caption="Street Name" required></ontario-input>
+
+                <ontario-input id="addr-unit" name="unitNumber" caption="Unit Number"></ontario-input>
+
+                <ontario-input id="addr-city" name="city" caption="City / Town" required></ontario-input>
+
+                <ontario-input
+                  id="addr-postal"
+                  name="postal"
+                  caption="Postal Code"
+                  required
+                  pattern="[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d"></ontario-input>
+              </div>
+            </fieldset>
+          </div>
+
+          <!-- certification part of the form -->
+          <div class="ontario-form-section">
+            <fieldset class="ontario-fieldset">
+              <legend class="ontario-fieldset__legend ontario-fieldset__legend--small">
+                3. Certification
+              </legend>
+
+              <ontario-checkboxes
+                id="certify-box"
+                name="certify"
+                required
+                caption="Certification"
+                options='[{
+                  "value": "certify",
+                  "label": "I certify this inspection is complete and accurate.",
+                  "elementId": "certify-check"
+                }]'>
+              </ontario-checkboxes>
+
+              <ontario-input id="signoff-name" name="signoffName" caption="Inspector Full Name" readonly></ontario-input>
+              <ontario-input id="signoff-date" name="signoffDate" caption="Certification Date" readonly></ontario-input>
+            </fieldset>
+          </div>
+
+          <ontario-button type="primary" element="button" html-type="submit" class="ontario-margin-top-16">Submit Inspection</ontario-button>
+
+          <div class="ontario-row ontario-margin-top-32">
+          <div class="ontario-column">
+            <a href="/admin.html"  class="ontario-button--secondary ontario-margin-top-16">Admin Panel</a>
+          </div>
+        </div>
+          <div id="statusMsg" class="ontario-margin-top-16"></div>
+        </form>
+       
+      </div>
+    </div>
+  </main>
+
+  <!-- loading the header from commonjs-->
+  <script type="module">
+    import { loadCommonLayout } from './common.js';
+    loadCommonLayout(); 
+  </script>
+</body>
+</html>
