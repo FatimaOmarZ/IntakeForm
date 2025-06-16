@@ -143,7 +143,7 @@
     "unitNumber": "345",
     "city": "Waterloo",
     "postal": "N3K 2L4",
-    "certify": false,
+    "certify": true,
     "inspectorEmail": "jane.doe@ontario.ca",
     "inspectorPhone": "416-555-1234",
     "complainantEmail": "",
@@ -200,5 +200,31 @@
       "certify"
     ],
     "submittedAt": "2025-06-16T04:49:03.195Z"
+  },
+  {
+    "id": "INS-00009",
+    "marshalNumber": "12345",
+    "inspectionDate": "2025-05-30",
+    "inspectionType": "routine",
+    "routineChecklist": "yes",
+    "routineScore": "87",
+    "followupPrevId": "",
+    "inspectorName": "Alex Chan",
+    "inspectorEmail": "alex.chan@example.ca",
+    "inspectorPhone": "416-555-0199",
+    "complainantEmail": "",
+    "complaintDesc": "",
+    "comments": "",
+    "streetNumber": "123",
+    "streetName": "King St W",
+    "unitNumber": "Suite 900",
+    "city": "Toronto",
+    "postal": "M5H 2N2",
+    "signoffName": "Alex Chan",
+    "signoffDate": "6/16/2025, 1:45:02 AM",
+    "certify": [
+      "certify"
+    ],
+    "submittedAt": "2025-06-16T05:45:05.206Z"
   }
 ]

@@ -86,9 +86,6 @@ function openDrawer(rowData) {
         <td>${r.inspectorName  || ''}</td>
         <td>${r.inspectionType || ''}</td>
         <td>${r.city           || ''}</td>
-        <td class="text-center">
-          <input type="checkbox" disabled ${r.certify ? 'checked' : ''}>
-        </td>
       </tr>
     `).join('');
 
